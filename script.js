@@ -1488,12 +1488,6 @@ function clearSelected(containerSelector) {
     .forEach(el => el.classList.remove('selected'));
 }
 
-const GEN_LINES = [
-  'Finding the right words…',
-  'Shaping the tone…',
-  'Almost ready…',
-];
-
 function tryGenerateMessage() {
   const { categoryId, problemId, toneId } = state;
   if (!categoryId || !problemId || !toneId) return;
@@ -1501,42 +1495,20 @@ function tryGenerateMessage() {
   const fn = MESSAGES[categoryId]?.[problemId];
   if (!fn) return;
 
-  // Show output card with loader
+  const message = fn()[toneId];
+  $('message-text').value = message;
+
+  // Restart fade-in animation
+  $('message-text').classList.remove('revealed');
+  void $('message-text').offsetWidth;
+  $('message-text').classList.add('revealed');
+
   const outputEl = $('output-section');
   outputEl.classList.remove('hidden');
-  $('generating').classList.remove('hidden');
-  $('message-text').classList.add('hidden');
-  $('output-actions').classList.add('hidden');
   $('copy-success').classList.add('hidden');
   $('ai-status').classList.add('hidden');
 
-  // Scroll immediately
   setTimeout(() => outputEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 60);
-
-  // Cycle loader lines
-  let i = 0;
-  const interval = setInterval(() => {
-    i++;
-    if (i < GEN_LINES.length) {
-      const el = $('gen-text');
-      el.style.opacity = '0';
-      setTimeout(() => { el.textContent = GEN_LINES[i]; el.style.opacity = '1'; }, 100);
-    }
-  }, 60);
-
-  // Reveal message after minimal pause
-  setTimeout(() => {
-    clearInterval(interval);
-    const message = fn()[toneId];
-    $('message-text').value = message;
-    $('message-text').classList.remove('hidden');
-    $('message-text').classList.remove('revealed');
-    // Force reflow to restart animation
-    void $('message-text').offsetWidth;
-    $('message-text').classList.add('revealed');
-    $('output-actions').classList.remove('hidden');
-    $('generating').classList.add('hidden');
-  }, 150);
 }
 
 
