@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ComplaintCraft</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app">
+
+    <header>
+      <h1>ComplaintCraft</h1>
+      <p class="tagline">Get a perfect support message in seconds</p>
+    </header>
+
+    <main>
+
+      <!-- 1: Category -->
+      <section class="section">
+        <h2>What type of issue?</h2>
+        <div class="category-grid" id="category-grid"></div>
+      </section>
+
+      <div class="divider"></div>
+
+      <!-- 2: Problem -->
+      <section class="section">
+        <h2>What went wrong?</h2>
+        <div id="problem-wrap">
+          <p class="empty-state" id="problem-empty">Select a category above</p>
+          <div class="chips-wrap hidden" id="problem-chips"></div>
+        </div>
+      </section>
+
+      <div class="divider"></div>
+
+      <!-- 3: Tone -->
+      <section class="section">
+        <h2>How do you want to sound?</h2>
+        <div class="tone-grid" id="tone-grid"></div>
+      </section>
+
+      <!-- Output — auto-appears when all 3 selected -->
+      <div class="output-section hidden" id="output-section">
+        <div class="output-header">
+          <span class="output-label">Your message</span>
+          <button class="btn-ghost" id="btn-reset">Reset</button>
+        </div>
+        <textarea id="message-text" readonly spellcheck="false"></textarea>
+        <div class="output-actions">
+          <button class="btn-primary" id="btn-copy">Copy message</button>
+          <button class="btn-secondary" id="btn-ai-regen">✦ Regenerate with AI</button>
+        </div>
+        <p class="copy-success hidden" id="copy-success">✓ Copied to clipboard</p>
+
+        <!-- API key prompt — hidden until needed -->
+        <div class="api-key-box hidden" id="api-key-box">
+          <p class="api-key-label">Enter your Anthropic API key to regenerate with AI</p>
+          <div class="api-key-row">
+            <input type="password" id="api-key-input" placeholder="sk-ant-api03-..." autocomplete="off" />
+            <button class="btn-primary btn-sm" id="btn-save-key">Save &amp; Go</button>
+          </div>
+          <p class="api-key-note">Stored only in your browser. <button class="link-btn" id="btn-clear-key">Clear key</button></p>
+        </div>
+
+        <p class="ai-status hidden" id="ai-status"></p>
+
+        <p class="tip">Fill in the <strong>[placeholders]</strong> with your actual order/ride details before sending.</p>
+      </div>
+
+    </main>
+
+    <footer>No data stored · Works offline · Made for frustrated Indians 🇮🇳</footer>
+
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
