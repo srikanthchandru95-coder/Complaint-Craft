@@ -53,7 +53,35 @@ const CATEGORIES = [
       { id: 'lost_item',        label: 'Lost item in vehicle' },
       { id: 'rude_driver',      label: 'Rude/unsafe driver' },
     ]
-  }
+  },
+  {
+    id: 'telecom',
+    icon: '📱',
+    name: 'Telecom',
+    apps: 'Airtel · Jio · Vi (Vodafone Idea)',
+    problems: [
+      { id: 'no_network',              label: 'No signal / call drops' },
+      { id: 'data_not_working',        label: 'Mobile data not working' },
+      { id: 'wrong_deduction',         label: 'Balance deducted without reason' },
+      { id: 'recharge_not_activated',  label: 'Recharge not activated' },
+      { id: 'unwanted_charges',        label: 'Unwanted subscription charged' },
+      { id: 'port_stuck',              label: 'Number port (MNP) stuck' },
+    ]
+  },
+  {
+    id: 'broadband',
+    icon: '📡',
+    name: 'Broadband',
+    apps: 'ACT · Jio Fiber · Airtel Xstream · Hathway',
+    problems: [
+      { id: 'no_internet',             label: 'Internet completely down' },
+      { id: 'slow_speed',              label: 'Speed much slower than plan' },
+      { id: 'frequent_drops',          label: 'Connection keeps dropping' },
+      { id: 'technician_no_show',      label: 'Technician didn\'t show up' },
+      { id: 'wrong_bill',              label: 'Wrong bill / overcharged' },
+      { id: 'new_connection_delayed',  label: 'New connection not installed' },
+    ]
+  },
 ];
 
 const TONES = [
@@ -894,7 +922,547 @@ I want IMMEDIATE action — suspend this driver. And I expect compensation.
 
 If I don't receive a proper response, I will report this to the police, media, and file a formal safety complaint. Safety is non-negotiable.`
     }),
-  }
+  },
+
+  // ─── TELECOM ────────────────────────────────
+
+  telecom: {
+    no_network: () => ({
+      polite:
+`Hi Support Team 😊
+
+I've been experiencing very poor network signal and frequent call drops in my area for the past few days. I've already tried restarting my phone and reinserting the SIM, but the issue persists.
+
+Mobile Number: [Your number]
+Location: [Your area/city]
+
+Could you please look into this and let me know when it will be resolved? Thank you! 🙏`,
+
+      neutral:
+`Hello Support,
+
+I am facing persistent network issues — poor signal and frequent call drops at my location.
+
+Mobile Number: [Your number]
+Location: [Your area/city]
+Issue since: [Date]
+
+Please investigate and resolve at the earliest. Confirm once action is taken.`,
+
+      firm:
+`To Customer Support,
+
+I have been experiencing consistent network failure — no signal and call drops — for several days now. This is affecting my work and daily communication.
+
+Mobile Number: [Your number]
+Location: [Your area/city]
+
+I expect this to be escalated to your network team and resolved within 24 hours. If not, I will be filing a complaint with TRAI.`,
+
+      angry:
+`Support,
+
+My network has been USELESS for days — constant call drops, zero signal. I am paying for a service I am NOT receiving!
+
+Mobile Number: [Your number]
+Location: [Your area/city]
+
+Fix this IMMEDIATELY or I will file a formal complaint with TRAI (Telecom Regulatory Authority of India) and port my number out. This is completely unacceptable!`
+    }),
+
+    data_not_working: () => ({
+      polite:
+`Hi Support Team 😊
+
+My mobile data has stopped working even though I have an active plan with data balance remaining. I've tried turning airplane mode on/off and restarting, but no luck.
+
+Mobile Number: [Your number]
+Current Plan: [Plan name/amount]
+
+Could you please check what's going on and help fix this? Thank you! 🙏`,
+
+      neutral:
+`Hello Support,
+
+My mobile data is not working despite having an active plan with sufficient balance.
+
+Mobile Number: [Your number]
+APN settings have been verified. Device restarted. Issue persists.
+
+Please check from your end and resolve. Confirm once done.`,
+
+      firm:
+`To Customer Support,
+
+My mobile data is completely non-functional despite an active paid plan. This has been going on for too long and is unacceptable.
+
+Mobile Number: [Your number]
+Plan active: Yes | Data balance: Available
+
+I need this fixed within the next few hours. If not resolved today, I will approach TRAI with a formal complaint.`,
+
+      angry:
+`Support,
+
+I am paying for a data plan that DOES NOT WORK. My internet is down, I've done every troubleshooting step possible, and still nothing!
+
+Mobile Number: [Your number]
+
+Fix my data RIGHT NOW or I will file a TRAI complaint and switch operators immediately. I refuse to pay for a service that doesn't work!`
+    }),
+
+    wrong_deduction: () => ({
+      polite:
+`Hi Support Team 😊
+
+I noticed that my prepaid balance was deducted without any call, SMS, or data usage on my end. I haven't activated any new service either.
+
+Mobile Number: [Your number]
+Amount deducted: ₹[Amount]
+Date/Time: [When it happened]
+
+Could you please check and refund the wrongly deducted amount? Thank you! 🙏`,
+
+      neutral:
+`Hello Support,
+
+An unauthorized deduction was made from my prepaid balance. I did not initiate any purchase, activation, or usage that would explain this charge.
+
+Mobile Number: [Your number]
+Amount: ₹[Amount]
+Date/Time: [When it happened]
+
+Please investigate and reverse the deduction immediately.`,
+
+      firm:
+`To Customer Support,
+
+My account balance was deducted without my consent or any corresponding usage. This is an unauthorized charge.
+
+Mobile Number: [Your number]
+Amount deducted: ₹[Amount]
+Date/Time: [When]
+
+I demand an immediate refund of the wrongly deducted amount. If not resolved within 24 hours, I will file a complaint with TRAI for unauthorized charges.`,
+
+      angry:
+`Support,
+
+Money was STOLEN from my balance — I made no calls, used no data, activated nothing. Yet ₹[Amount] is gone!
+
+Mobile Number: [Your number]
+Date/Time: [When]
+
+REFUND MY MONEY IMMEDIATELY. This is fraud. If not reversed right now, I am filing a TRAI complaint and escalating to the consumer forum. You cannot take money from customers without reason!`
+    }),
+
+    recharge_not_activated: () => ({
+      polite:
+`Hi Support Team 😊
+
+I did a recharge for my number but the plan hasn't been activated yet. The money was deducted from my account but my current plan and balance haven't changed.
+
+Mobile Number: [Your number]
+Recharge Amount: ₹[Amount]
+Transaction ID: [Your transaction ID]
+Recharge Date/Time: [When]
+
+Could you please activate the plan or refund the amount? Thank you! 🙏`,
+
+      neutral:
+`Hello Support,
+
+I recharged my number but the plan has not been activated. Payment was successful but the benefits haven't reflected.
+
+Mobile Number: [Your number]
+Amount: ₹[Amount]
+Transaction ID: [Your transaction ID]
+Date: [Date]
+
+Please activate the plan immediately or issue a refund.`,
+
+      firm:
+`To Customer Support,
+
+I completed a recharge and my payment was deducted, but the plan has NOT been activated. I have the transaction proof.
+
+Mobile Number: [Your number]
+Amount: ₹[Amount]
+Transaction ID: [Your transaction ID]
+
+Either activate the plan within the next 2 hours or refund the full amount. I will not let this go unresolved.`,
+
+      angry:
+`Support,
+
+I paid ₹[Amount] for a recharge and got NOTHING in return! Money taken, plan not activated — this is cheating!
+
+Mobile Number: [Your number]
+Transaction ID: [Your transaction ID]
+
+ACTIVATE MY PLAN RIGHT NOW or REFUND THE MONEY. If this isn't resolved in the next hour, I am filing a consumer complaint and disputing the charge with my bank!`
+    }),
+
+    unwanted_charges: () => ({
+      polite:
+`Hi Support Team 😊
+
+I noticed a deduction from my balance for a subscription or VAS service that I never signed up for. I definitely did not activate this intentionally.
+
+Mobile Number: [Your number]
+Service charged for: [Service name if known]
+Amount deducted: ₹[Amount]
+
+Could you please deactivate this service and refund the amount? Thank you! 🙏`,
+
+      neutral:
+`Hello Support,
+
+A VAS/subscription service has been activated on my number without my consent, and my balance has been deducted for it.
+
+Mobile Number: [Your number]
+Unwanted service: [Service name if known]
+Amount deducted: ₹[Amount]
+
+Please deactivate the service immediately and refund the deducted amount.`,
+
+      firm:
+`To Customer Support,
+
+An unauthorized subscription has been activated on my number and money deducted without my explicit consent. This practice of activating paid services without clear user approval is unacceptable.
+
+Mobile Number: [Your number]
+Service: [Service name if known]
+Amount: ₹[Amount]
+
+I demand: (1) Immediate deactivation of the service, (2) Full refund. TRAI regulations prohibit activating VAS without double confirmation — I will report this if not resolved.`,
+
+      angry:
+`Support,
+
+You ACTIVATED a paid service on my number WITHOUT MY CONSENT and deducted my balance! This is a clear TRAI violation!
+
+Mobile Number: [Your number]
+Amount stolen: ₹[Amount]
+
+DEACTIVATE IT AND REFUND MY MONEY NOW. I will be filing a complaint with TRAI (which mandates double opt-in for VAS) and the consumer forum if this isn't fixed immediately. This is deliberate fraud!`
+    }),
+
+    port_stuck: () => ({
+      polite:
+`Hi Support Team 😊
+
+I submitted a request to port my number to another network, but the process seems to be stuck. It's been much longer than the expected timeframe and my number hasn't been ported yet.
+
+Mobile Number: [Your number]
+UPC Code: [Your UPC code]
+Port request date: [Date]
+New operator: [New operator name]
+
+Could you help me understand the status and get this resolved? Thank you! 🙏`,
+
+      neutral:
+`Hello Support,
+
+My Mobile Number Portability (MNP) request has not been processed within the stipulated time period.
+
+Mobile Number: [Your number]
+UPC Code: [Your UPC code]
+Request submitted: [Date]
+
+As per TRAI guidelines, porting must be completed within 5 working days. Please process this immediately.`,
+
+      firm:
+`To Customer Support,
+
+My number portability request has been delayed beyond the TRAI-mandated timeline. This is a regulatory violation.
+
+Mobile Number: [Your number]
+UPC Code: [Your UPC code]
+Request date: [Date]
+
+I demand immediate processing of my port request. Any deliberate delay in MNP processing is a violation of TRAI regulations and I will report it as such.`,
+
+      angry:
+`Support,
+
+My number port request has been ILLEGALLY DELAYED. TRAI mandates porting within 5 working days — you are in VIOLATION of this regulation!
+
+Mobile Number: [Your number]
+UPC Code: [Your UPC code]
+Request date: [Date]
+
+Process my port request IMMEDIATELY. I am simultaneously filing a complaint with TRAI for deliberate obstruction of my right to port. This is unacceptable and illegal!`
+    }),
+  },
+
+  // ─── BROADBAND ──────────────────────────────
+
+  broadband: {
+    no_internet: () => ({
+      polite:
+`Hi Support Team 😊
+
+My broadband connection has been completely down since [time/date]. I've tried restarting the router multiple times but the issue persists. All lights on the router seem off or showing an error.
+
+Registered Account/Number: [Your account number or registered mobile]
+Location: [Your address/area]
+
+Could you please look into this urgently? I'm working from home and this is quite critical. Thank you! 🙏`,
+
+      neutral:
+`Hello Support,
+
+My broadband internet connection is completely down. Router restart has not resolved the issue.
+
+Account Number: [Your account number]
+Address: [Your address]
+Outage since: [Date and time]
+
+Please dispatch a technician or resolve remotely at the earliest. Confirm ETA.`,
+
+      firm:
+`To Customer Support,
+
+My broadband connection has been down for [X hours/days] with no resolution or communication from your end. This is severely impacting my work.
+
+Account Number: [Your account number]
+Address: [Your address]
+
+I need a technician at my location within 24 hours and a confirmed resolution time. If not resolved, I will be claiming a service credit for downtime and escalating to TRAI.`,
+
+      angry:
+`Support,
+
+My internet has been DOWN for [X hours/days] and nobody has bothered to fix it or even communicate with me!
+
+Account Number: [Your account number]
+
+Get a technician to my location TODAY. If this isn't resolved by end of day, I will file a TRAI complaint for service disruption, claim a full refund for the downtime period, and cancel my connection. This is completely unacceptable!`
+    }),
+
+    slow_speed: () => ({
+      polite:
+`Hi Support Team 😊
+
+I'm subscribed to a [X Mbps] plan but I've been consistently getting speeds much lower than that — sometimes as low as [actual speed]. I've tested this multiple times using speed test tools at different hours.
+
+Account Number: [Your account number]
+Plan speed: [X Mbps]
+Getting: [Actual speed]
+Speed test screenshots: Available
+
+Could you please investigate and fix this? Thank you! 🙏`,
+
+      neutral:
+`Hello Support,
+
+I am not receiving the internet speeds I am paying for. My plan promises [X Mbps] but consistent speed tests show [actual speed].
+
+Account Number: [Your account number]
+Plan: [Plan name] — [X Mbps]
+Actual speed: [Speed from test]
+Tested at: [Multiple times/dates]
+
+Please investigate and restore speeds to the promised level.`,
+
+      firm:
+`To Customer Support,
+
+I have been receiving significantly lower speeds than my subscribed plan for an extended period. This is a breach of the service I am paying for.
+
+Account Number: [Your account number]
+Promised speed: [X Mbps] | Actual speed: [Y Mbps]
+
+I expect the issue to be diagnosed and resolved within 48 hours. If speeds are not restored to the plan level, I will demand a pro-rated refund and escalate to TRAI for not delivering contracted service.`,
+
+      angry:
+`Support,
+
+I am paying for [X Mbps] and getting [Y Mbps] — that is [%] of what I'm paying for! This is cheating!
+
+Account Number: [Your account number]
+
+Either DELIVER THE SPEEDS I AM PAYING FOR or give me a refund for every day I've been getting substandard service. If this isn't fixed this week, I am cancelling my connection, filing a TRAI complaint, and making sure people know about your false speed claims.`
+    }),
+
+    frequent_drops: () => ({
+      polite:
+`Hi Support Team 😊
+
+My broadband connection keeps dropping multiple times throughout the day. It reconnects after a few minutes but the constant interruptions are making it impossible to work, attend video calls, or stream anything reliably.
+
+Account Number: [Your account number]
+Address: [Your address]
+How often it drops: [e.g., 5–10 times a day]
+
+Could you please check the line or send a technician? Thank you! 🙏`,
+
+      neutral:
+`Hello Support,
+
+My broadband connection is frequently disconnecting throughout the day. The instability is causing major disruption to work and online activities.
+
+Account Number: [Your account number]
+Address: [Your address]
+Drop frequency: [Approx. times per day]
+
+Please check for line faults or routing issues and resolve. Confirm action taken.`,
+
+      firm:
+`To Customer Support,
+
+My connection has been dropping [X] times a day for the past [X days]. This is not an acceptable level of service and restarting the router is not a fix.
+
+Account Number: [Your account number]
+Address: [Your address]
+
+I need a technician to diagnose the root cause — line fault, equipment issue, or otherwise — and permanently resolve it within 48 hours. Temporary fixes will not be accepted.`,
+
+      angry:
+`Support,
+
+My connection drops CONSTANTLY — multiple times every single day. I cannot work, I cannot attend meetings, I cannot do anything reliably!
+
+Account Number: [Your account number]
+
+Send a technician TOMORROW who will ACTUALLY FIX THIS, not just restart the router. If this keeps happening after the visit, I am cancelling my subscription, demanding a full refund for this month, and filing a TRAI complaint for consistently failing to deliver stable service!`
+    }),
+
+    technician_no_show: () => ({
+      polite:
+`Hi Support Team 😊
+
+I had a technician visit scheduled for today between [time slot] but no one showed up. I took time off to be available and there was no call or message about a delay or rescheduling.
+
+Account Number: [Your account number]
+Complaint/Ticket Number: [If available]
+Scheduled visit: [Date and time slot]
+
+Could you please reschedule urgently and ensure someone actually shows up this time? Thank you! 🙏`,
+
+      neutral:
+`Hello Support,
+
+A technician was scheduled to visit my premises today but did not arrive. No prior communication was received about rescheduling or delay.
+
+Account Number: [Your account number]
+Ticket Number: [If available]
+Scheduled slot: [Date, time]
+
+Please reschedule within the next 24 hours and confirm the appointment. I cannot keep taking time off for missed visits.`,
+
+      firm:
+`To Customer Support,
+
+A technician was booked to visit today and did not show up — no call, no message, nothing. This is a complete waste of my time.
+
+Account Number: [Your account number]
+Missed appointment: [Date, time slot]
+
+I expect a technician at my location within the next 24 hours. If another no-show occurs, I will escalate this formally and demand compensation for the repeated inconvenience.`,
+
+      angry:
+`Support,
+
+Your technician was booked for today and SIMPLY DIDN'T COME. No call, no message, nothing. I waited at home specifically for this!
+
+Account Number: [Your account number]
+Missed visit: [Date, time]
+
+Send someone TOMORROW without fail — no more excuses. If there is another no-show, I am cancelling my connection, filing a consumer complaint, and making sure others know how unreliable your service team is. This is completely unacceptable!`
+    }),
+
+    wrong_bill: () => ({
+      polite:
+`Hi Support Team 😊
+
+I received my latest bill and the amount seems higher than my plan charges. I'd like to understand what the extra charges are for, as I don't believe I've used any additional services.
+
+Account Number: [Your account number]
+Plan amount: ₹[Plan cost]
+Billed amount: ₹[Billed cost]
+Bill date/cycle: [Month/period]
+
+Could you please review and correct this? Thank you! 🙏`,
+
+      neutral:
+`Hello Support,
+
+My latest broadband bill is higher than my plan amount. I have not added any services or exceeded my plan limits.
+
+Account Number: [Your account number]
+Expected amount: ₹[Plan cost]
+Billed amount: ₹[Billed cost]
+
+Please review the bill, explain any additional charges, and issue a corrected invoice or credit note.`,
+
+      firm:
+`To Customer Support,
+
+I have been overbilled this month. The amount charged is higher than my subscribed plan with no explanation for the difference.
+
+Account Number: [Your account number]
+Plan: ₹[Plan cost]/month | Billed: ₹[Billed cost]
+
+I will not pay the excess amount until a detailed and accurate bill is provided. Please issue a corrected bill within 48 hours or I will withhold the excess and escalate to TRAI.`,
+
+      angry:
+`Support,
+
+You have OVERCHARGED me this month! My plan costs ₹[Plan cost] and you've billed me ₹[Billed cost] with ZERO explanation!
+
+Account Number: [Your account number]
+
+Issue a corrected bill and refund the excess IMMEDIATELY. I will not pay an incorrect bill. If this isn't sorted, I am filing a TRAI complaint for billing fraud and disputing the charge with my bank. You cannot randomly charge customers extra!`
+    }),
+
+    new_connection_delayed: () => ({
+      polite:
+`Hi Support Team 😊
+
+I applied for a new broadband connection and made the payment, but the installation hasn't happened yet. It's been longer than the promised installation timeline.
+
+Name: [Your name]
+Registered Mobile: [Your number]
+Application/Order ID: [Your ID]
+Payment date: [Date]
+Promised installation by: [Date]
+
+Could you please give me an update and arrange the installation at the earliest? Thank you! 🙏`,
+
+      neutral:
+`Hello Support,
+
+I applied and paid for a new broadband connection but installation has not been completed within the promised timeframe.
+
+Application ID: [Your ID]
+Registered Mobile: [Your number]
+Payment date: [Date]
+Expected installation: [Date promised]
+
+Please schedule and complete the installation within the next 48 hours, or process a full refund.`,
+
+      firm:
+`To Customer Support,
+
+I applied and paid for a new broadband connection on [date] with a promised installation by [date]. That deadline has passed with no installation and no communication.
+
+Application ID: [Your ID]
+Amount paid: ₹[Amount]
+
+I require installation within the next 48 hours. If that is not possible, I demand a complete refund of the amount paid. Further delay is unacceptable.`,
+
+      angry:
+`Support,
+
+I paid ₹[Amount] for a new connection on [date] and NOBODY has come to install it! [X days] have passed since your promised installation date!
+
+Application ID: [Your ID]
+
+Either install my connection TOMORROW or REFUND MY MONEY IN FULL. I will not wait any longer. If neither happens, I am filing a consumer court complaint and disputing the charge with my bank. Taking money and not delivering the service is fraud!`
+    }),
+  },
 };
 
 
