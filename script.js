@@ -1084,45 +1084,16 @@ function onReset() {
   $('problem-chips').innerHTML = '';
   $('problem-empty').classList.remove('hidden');
   $('output-section').classList.add('hidden');
-  $('api-key-box').classList.add('hidden');
 
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 
 // ─────────────────────────────────────────────
-// AI REGENERATION
+// AI REGENERATION — powered by Pollinations.ai (free, no key)
 // ─────────────────────────────────────────────
 
-const API_KEY_STORAGE = 'cc_anthropic_key';
-
-function getApiKey() {
-  return localStorage.getItem(API_KEY_STORAGE) || '';
-}
-
-function saveApiKey(key) {
-  localStorage.setItem(API_KEY_STORAGE, key.trim());
-}
-
-function clearApiKey() {
-  localStorage.removeItem(API_KEY_STORAGE);
-}
-
-function onAiRegen() {
-  const key = getApiKey();
-  if (!key) {
-    // Show key prompt
-    const box = $('api-key-box');
-    box.classList.toggle('hidden');
-    if (!box.classList.contains('hidden')) {
-      $('api-key-input').focus();
-    }
-    return;
-  }
-  doAiRegen(key);
-}
-
-async function doAiRegen(apiKey) {
+async function onAiRegen() {
   const currentMessage = $('message-text').value;
   if (!currentMessage) return;
 
@@ -1144,64 +1115,32 @@ Original message:
 ${currentMessage}`;
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('https://text.pollinations.ai/', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 600,
-        messages: [{ role: 'user', content: prompt }]
+        messages: [{ role: 'user', content: prompt }],
+        model: 'openai',
+        seed: Math.floor(Math.random() * 9999),
+        private: true
       })
     });
 
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.error?.message || `API error ${res.status}`);
-    }
+    if (!res.ok) throw new Error(`Error ${res.status}`);
 
-    const data = await res.json();
-    const newMessage = data.content?.[0]?.text?.trim();
+    const newMessage = (await res.text()).trim();
 
     if (newMessage) {
       $('message-text').value = newMessage;
-      statusEl.textContent = '✦ New variation generated';
+      statusEl.textContent = '✦ New variation ready';
       setTimeout(() => statusEl.classList.add('hidden'), 2500);
     }
   } catch (err) {
-    statusEl.textContent = '✕ Error: ' + err.message;
-    // If auth error, clear key and show prompt again
-    if (err.message.includes('401') || err.message.includes('authentication')) {
-      clearApiKey();
-      $('api-key-box').classList.remove('hidden');
-      $('api-key-input').value = '';
-    }
+    statusEl.textContent = '✕ Could not reach AI — try again';
+    setTimeout(() => statusEl.classList.add('hidden'), 3000);
   } finally {
     regenBtn.disabled = false;
   }
-}
-
-function onSaveKey() {
-  const key = $('api-key-input').value.trim();
-  if (!key || !key.startsWith('sk-ant')) {
-    $('api-key-input').style.borderColor = '#EF4444';
-    setTimeout(() => $('api-key-input').style.borderColor = '', 1500);
-    return;
-  }
-  saveApiKey(key);
-  $('api-key-box').classList.add('hidden');
-  $('api-key-input').value = '';
-  doAiRegen(key);
-}
-
-function onClearKey() {
-  clearApiKey();
-  $('api-key-input').value = '';
-  $('api-key-box').classList.remove('hidden');
 }
 
 
@@ -1216,13 +1155,6 @@ function init() {
   $('btn-copy').addEventListener('click', onCopy);
   $('btn-reset').addEventListener('click', onReset);
   $('btn-ai-regen').addEventListener('click', onAiRegen);
-  $('btn-save-key').addEventListener('click', onSaveKey);
-  $('btn-clear-key').addEventListener('click', onClearKey);
-
-  // Allow Enter key in API key input
-  $('api-key-input').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') onSaveKey();
-  });
 }
 
 document.addEventListener('DOMContentLoaded', init);

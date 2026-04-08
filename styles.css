@@ -397,48 +397,6 @@ main {
   font-weight: 600;
 }
 
-/* ---- API Key Box ---- */
-.api-key-box {
-  margin-top: 14px;
-  border: 1.5px solid var(--ink-mid);
-  border-radius: var(--radius-sm);
-  padding: 14px;
-  background: var(--ink-lt);
-}
-
-.api-key-label {
-  font-size: 13px;
-  color: var(--text);
-  margin-bottom: 10px;
-  font-weight: 500;
-}
-
-.api-key-row {
-  display: flex;
-  gap: 8px;
-}
-
-#api-key-input {
-  flex: 1;
-  border: 1.5px solid var(--border);
-  border-radius: 8px;
-  padding: 10px 12px;
-  font-size: 13px;
-  font-family: monospace;
-  outline: none;
-  background: var(--white);
-  color: var(--text);
-}
-
-#api-key-input:focus {
-  border-color: var(--ink);
-}
-
-.api-key-note {
-  margin-top: 8px;
-  font-size: 11px;
-  color: var(--muted);
-}
 
 /* ---- AI Status ---- */
 .ai-status {
