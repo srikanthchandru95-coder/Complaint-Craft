@@ -1522,9 +1522,9 @@ function tryGenerateMessage() {
       el.style.opacity = '0';
       setTimeout(() => { el.textContent = GEN_LINES[i]; el.style.opacity = '1'; }, 100);
     }
-  }, 220);
+  }, 60);
 
-  // Reveal message after brief pause
+  // Reveal message after minimal pause
   setTimeout(() => {
     clearInterval(interval);
     const message = fn()[toneId];
@@ -1536,7 +1536,7 @@ function tryGenerateMessage() {
     $('message-text').classList.add('revealed');
     $('output-actions').classList.remove('hidden');
     $('generating').classList.add('hidden');
-  }, 680);
+  }, 150);
 }
 
 
