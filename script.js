@@ -1488,6 +1488,12 @@ function clearSelected(containerSelector) {
     .forEach(el => el.classList.remove('selected'));
 }
 
+const GEN_LINES = [
+  'Finding the right words…',
+  'Shaping the tone…',
+  'Almost ready…',
+];
+
 function tryGenerateMessage() {
   const { categoryId, problemId, toneId } = state;
   if (!categoryId || !problemId || !toneId) return;
@@ -1495,20 +1501,42 @@ function tryGenerateMessage() {
   const fn = MESSAGES[categoryId]?.[problemId];
   if (!fn) return;
 
-  const message = fn()[toneId];
-  $('message-text').value = message;
-
+  // Show output card with loader
   const outputEl = $('output-section');
   outputEl.classList.remove('hidden');
-
-  // Reset AI status
-  $('ai-status').classList.add('hidden');
+  $('generating').classList.remove('hidden');
+  $('message-text').classList.add('hidden');
+  $('output-actions').classList.add('hidden');
   $('copy-success').classList.add('hidden');
+  $('ai-status').classList.add('hidden');
 
-  // Smooth scroll to output
+  // Scroll immediately
+  setTimeout(() => outputEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 60);
+
+  // Cycle loader lines
+  let i = 0;
+  const interval = setInterval(() => {
+    i++;
+    if (i < GEN_LINES.length) {
+      const el = $('gen-text');
+      el.style.opacity = '0';
+      setTimeout(() => { el.textContent = GEN_LINES[i]; el.style.opacity = '1'; }, 100);
+    }
+  }, 220);
+
+  // Reveal message after brief pause
   setTimeout(() => {
-    outputEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }, 60);
+    clearInterval(interval);
+    const message = fn()[toneId];
+    $('message-text').value = message;
+    $('message-text').classList.remove('hidden');
+    $('message-text').classList.remove('revealed');
+    // Force reflow to restart animation
+    void $('message-text').offsetWidth;
+    $('message-text').classList.add('revealed');
+    $('output-actions').classList.remove('hidden');
+    $('generating').classList.add('hidden');
+  }, 680);
 }
 
 
@@ -1610,14 +1638,47 @@ function onToneSelect(toneId) {
 // COPY
 // ─────────────────────────────────────────────
 
+function launchConfetti() {
+  const container = $('confetti-container');
+  const colors = ['#4F46E5', '#818CF8', '#E0E7FF', '#6366F1', '#A5B4FC', '#C7D2FE'];
+  const btn = $('btn-copy').getBoundingClientRect();
+  const originX = btn.left + btn.width / 2;
+  const originY = btn.top + btn.height / 2;
+
+  for (let i = 0; i < 32; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'confetti-dot';
+    const size = 4 + Math.random() * 7;
+    dot.style.cssText = [
+      `left: ${originX + (Math.random() - 0.5) * 120}px`,
+      `top: ${originY}px`,
+      `width: ${size}px`,
+      `height: ${size}px`,
+      `background: ${colors[Math.floor(Math.random() * colors.length)]}`,
+      `border-radius: ${Math.random() > 0.4 ? '50%' : '2px'}`,
+      `animation-duration: ${0.55 + Math.random() * 0.7}s`,
+      `animation-delay: ${Math.random() * 0.25}s`,
+    ].join(';');
+    container.appendChild(dot);
+    setTimeout(() => dot.remove(), 1400);
+  }
+}
+
 function onCopy() {
   const text = $('message-text').value;
   if (!text) return;
 
   const done = () => {
+    // Celebration copy text
+    const btn = $('btn-copy');
+    btn.textContent = 'Copied! Now go send it 💪';
+    setTimeout(() => { btn.textContent = 'Copy message'; }, 2500);
+
     const el = $('copy-success');
     el.classList.remove('hidden');
     setTimeout(() => el.classList.add('hidden'), 2500);
+
+    launchConfetti();
   };
 
   if (navigator.clipboard?.writeText) {
@@ -1716,9 +1777,28 @@ ${currentMessage}`;
 // INIT
 // ─────────────────────────────────────────────
 
+function startEmojiCycle() {
+  const sequence = ['😤', '😮‍💨', '😌', '💪'];
+  let idx = 0;
+  const el = $('calm-emoji');
+
+  setInterval(() => {
+    // Fade + shrink out
+    el.style.opacity = '0';
+    el.style.transform = 'scale(0.6)';
+    setTimeout(() => {
+      idx = (idx + 1) % sequence.length;
+      el.textContent = sequence[idx];
+      el.style.opacity = '1';
+      el.style.transform = 'scale(1)';
+    }, 180);
+  }, 2000);
+}
+
 function init() {
   renderCategories();
   renderTones();
+  startEmojiCycle();
 
   $('btn-copy').addEventListener('click', onCopy);
   $('btn-reset').addEventListener('click', onReset);
